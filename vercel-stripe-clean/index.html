@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stripe API Server</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+      .container {
+        text-align: center;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+      }
+      .status {
+        color: #4ade80;
+        font-size: 1.2em;
+        margin: 1rem 0;
+      }
+      .endpoint {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 1rem;
+        border-radius: 10px;
+        font-family: monospace;
+        margin: 1rem 0;
+      }
+      .test-button {
+        background: #4ade80;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        margin-top: 1rem;
+      }
+      .test-button:hover {
+        background: #22c55e;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🚀 Stripe API Server</h1>
+      <div class="status">✅ Server Running Successfully</div>
+      <p>This is a Vercel-hosted Stripe payment API</p>
+
+      <div class="endpoint">
+        <strong>API Endpoint:</strong><br />
+        POST /api/create-checkout-session
+      </div>
+
+      <p>🍪 Ready for Cookie App payments!</p>
+      <small>Deployed on Vercel • No localhost dependencies</small>
+
+      <br />
+      <button class="test-button" onclick="testAPI()">
+        Test API Connection
+      </button>
+
+      <div id="result" style="margin-top: 1rem"></div>
+    </div>
+
+    <script>
+      async function testAPI() {
+        const resultDiv = document.getElementById("result");
+        resultDiv.innerHTML = "⏳ Testing API...";
+
+        try {
+          const response = await fetch("/api/create-checkout-session", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              cart: [
+                {
+                  product: { id: "1", name: "Test Cookie", price: 50 },
+                  quantity: 1,
+                },
+              ],
+              shippingInfo: {
+                firstName: "Test",
+                lastName: "User",
+                email: "test@test.com",
+                phone: "123",
+                address: "123 Test St",
+                city: "Test",
+                state: "Test",
+                zipCode: "12345",
+                country: "Philippines",
+              },
+              shipping: 0,
+              tax: 6,
+            }),
+          });
+
+          if (response.ok) {
+            resultDiv.innerHTML = "✅ API Working! Stripe integration ready.";
+            resultDiv.style.color = "#4ade80";
+          } else {
+            resultDiv.innerHTML = `❌ API Error: ${response.status}`;
+            resultDiv.style.color = "#ef4444";
+          }
+        } catch (error) {
+          resultDiv.innerHTML = `❌ Connection Error: ${error.message}`;
+          resultDiv.style.color = "#ef4444";
+        }
+      }
+    </script>
+  </body>
+</html>
