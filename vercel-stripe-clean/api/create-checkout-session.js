@@ -25,6 +25,8 @@ module.exports = async (req, res) => {
     const { cart, shippingInfo, shipping, tax, successUrl, cancelUrl } =
       req.body;
 
+    console.log("📍 Redirect URLs received:", { successUrl, cancelUrl });
+
     if (!cart || !Array.isArray(cart) || cart.length === 0) {
       return res.status(400).json({ error: "Cart is empty" });
     }
@@ -62,14 +64,25 @@ module.exports = async (req, res) => {
       });
     }
 
+    // Use provided URLs or fallback to localhost (for development only)
+    const finalSuccessUrl =
+      successUrl && successUrl.trim() !== ""
+        ? `${successUrl}?session_id={CHECKOUT_SESSION_ID}`
+        : "http://localhost:8101/order-confirmation?session_id={CHECKOUT_SESSION_ID}";
+
+    const finalCancelUrl =
+      cancelUrl && cancelUrl.trim() !== ""
+        ? cancelUrl
+        : "http://localhost:8101/cart";
+
+    console.log("✅ Using URLs:", { finalSuccessUrl, finalCancelUrl });
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: line_items,
       mode: "payment",
-      success_url: successUrl
-        ? `${successUrl}?session_id={CHECKOUT_SESSION_ID}`
-        : "http://localhost:8101/order-confirmation?session_id={CHECKOUT_SESSION_ID}",
-      cancel_url: cancelUrl || "http://localhost:8101/cart",
+      success_url: finalSuccessUrl,
+      cancel_url: finalCancelUrl,
       metadata: {
         shippingInfo: JSON.stringify(shippingInfo),
       },

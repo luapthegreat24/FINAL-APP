@@ -29,13 +29,14 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { cart, shippingInfo, shipping, tax } = req.body;
+  const { cart, shippingInfo, shipping, tax, successUrl, cancelUrl } = req.body;
 
   console.log("📦 Received checkout request:");
   console.log("- Cart items:", cart?.length || 0);
   console.log("- Customer:", shippingInfo?.email);
   console.log("- Shipping:", shipping);
   console.log("- Tax:", tax);
+  console.log("📍 Redirect URLs received:", { successUrl, cancelUrl });
 
   try {
     const line_items = cart.map((item) => ({
@@ -92,12 +93,23 @@ export default async function handler(req, res) {
 
     console.log("💳 Creating Stripe session with:", line_items.length, "items");
 
+    // Use provided URLs or fallback to FRONTEND_URL (for development only)
+    const finalSuccessUrl =
+      successUrl && successUrl.trim() !== ""
+        ? `${successUrl}?session_id={CHECKOUT_SESSION_ID}`
+        : `${FRONTEND_URL}/OrderConfirmation?session_id={CHECKOUT_SESSION_ID}`;
+
+    const finalCancelUrl =
+      cancelUrl && cancelUrl.trim() !== "" ? cancelUrl : `${FRONTEND_URL}/cart`;
+
+    console.log("✅ Using URLs:", { finalSuccessUrl, finalCancelUrl });
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items,
       mode: "payment",
-      success_url: `${FRONTEND_URL}/OrderConfirmation`,
-      cancel_url: `${FRONTEND_URL}/cart`,
+      success_url: finalSuccessUrl,
+      cancel_url: finalCancelUrl,
       customer_email: shippingInfo?.email || undefined,
       shipping_address_collection: {
         allowed_countries: ["PH"], // Philippines only
