@@ -796,3 +796,993 @@ ion-page {
     font-size: 20px;
   }
 }
+
+/* Customize Cookie Box Button */
+.customize-box-btn {
+  margin-top: 20px;
+  padding: 15px 35px;
+  background: #d2691e;
+  color: #fff;
+  border: 4px solid #3d2817;
+  border-radius: 50px;
+  font-family: "Permanent Marker", cursive;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 6px 6px 0px #3d2817;
+  transition: all 0.3s;
+  display: inline-block;
+}
+
+.customize-box-btn:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 4px 4px 0px #3d2817;
+}
+
+.customize-box-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 2px 2px 0px #3d2817;
+}
+
+/* Customize Modal */
+.customize-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+  overflow-y: auto;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.customize-modal {
+  margin-top: 200px;
+  margin-bottom: 20px;
+  background: #fff9f0;
+  border: 5px solid #3d2817;
+  border-radius: 25px;
+  padding: 35px;
+  width: 920px;
+  max-width: 95%;
+  max-height: 85vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-shadow: 10px 10px 0px rgba(61, 40, 23, 0.4);
+  animation: slideUp 0.3s ease;
+  scroll-behavior: smooth;
+  position: relative;
+  will-change: transform, opacity;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Custom scrollbar for modal */
+.customize-modal::-webkit-scrollbar {
+  width: 10px;
+}
+
+.customize-modal::-webkit-scrollbar-track {
+  background: #fff9f0;
+  border-radius: 10px;
+}
+
+.customize-modal::-webkit-scrollbar-thumb {
+  background: #d2691e;
+  border-radius: 10px;
+  border: 2px solid #fff9f0;
+}
+
+.customize-modal::-webkit-scrollbar-thumb:hover {
+  background: #e67e22;
+}
+
+/* Custom scrollbar for cookie grid */
+.customize-cookie-grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+.customize-cookie-grid::-webkit-scrollbar-track {
+  background: #fff9f0;
+  border-radius: 8px;
+}
+
+.customize-cookie-grid::-webkit-scrollbar-thumb {
+  background: #d2691e;
+  border-radius: 8px;
+}
+
+.customize-cookie-grid::-webkit-scrollbar-thumb:hover {
+  background: #e67e22;
+}
+
+.customize-modal h2 {
+  font-family: "Permanent Marker", cursive;
+  font-size: 36px;
+  color: #3d2817;
+  margin: 0 0 10px 0;
+  text-align: center;
+}
+
+.customize-subtitle {
+  font-family: "Patrick Hand", cursive;
+  font-size: 18px;
+  color: #8b6f47;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+/* Box Size Selector */
+.box-size-selector {
+  margin-bottom: 25px;
+}
+
+.box-size-selector label {
+  font-family: "Comic Neue", cursive;
+  font-size: 18px;
+  font-weight: bold;
+  color: #3d2817;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.size-options {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.size-btn {
+  padding: 15px 25px;
+  background: #fff;
+  border: 3px solid #3d2817;
+  border-radius: 15px;
+  font-family: "Comic Neue", cursive;
+  font-size: 16px;
+  font-weight: bold;
+  color: #3d2817;
+  cursor: pointer;
+  box-shadow: 4px 4px 0px rgba(61, 40, 23, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.size-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 5px 5px 0px rgba(61, 40, 23, 0.3);
+}
+
+.size-btn:active {
+  transform: translateY(0px);
+  box-shadow: 3px 3px 0px rgba(61, 40, 23, 0.3);
+}
+
+.size-btn.active {
+  background: #d2691e;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.size-price {
+  font-size: 14px;
+  font-family: "Permanent Marker", cursive;
+}
+
+/* Selection Progress */
+.selection-progress {
+  margin-bottom: 25px;
+}
+
+.progress-text {
+  font-family: "Comic Neue", cursive;
+  font-size: 16px;
+  font-weight: bold;
+  color: #3d2817;
+  display: block;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 25px;
+  background: #fff;
+  border: 3px solid #3d2817;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #d2691e, #e67e22);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Instructions */
+.drag-instructions {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #fff;
+  border: 3px dashed #d2691e;
+  border-radius: 15px;
+}
+
+.drag-instructions p {
+  font-family: "Comic Neue", cursive;
+  font-size: 16px;
+  font-weight: bold;
+  color: #3d2817;
+  margin: 0;
+}
+
+.desktop-instruction {
+  display: block;
+}
+
+.mobile-instruction {
+  display: none;
+}
+
+.selected-indicator {
+  color: #27ae60;
+  animation: pulse 0.5s ease-in-out;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Box Pagination */
+.box-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #fff;
+  border: 3px solid #3d2817;
+  border-radius: 15px;
+}
+
+.pagination-btn {
+  padding: 10px 20px;
+  background: #d2691e;
+  color: #fff;
+  border: 3px solid #3d2817;
+  border-radius: 12px;
+  font-family: "Comic Neue", cursive;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 3px 3px 0px #3d2817;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0px #3d2817;
+  background: #e67e22;
+}
+
+.pagination-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.pagination-dots {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.pagination-dot {
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  border: 3px solid #3d2817;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Permanent Marker", cursive;
+  font-size: 14px;
+  color: #3d2817;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.pagination-dot:hover {
+  transform: scale(1.1);
+  background: #fff9f0;
+}
+
+.pagination-dot.active {
+  background: #d2691e;
+  color: #fff;
+  transform: scale(1.2);
+  box-shadow: 0 0 0 4px rgba(210, 105, 30, 0.3);
+}
+
+.pagination-dot.completed {
+  background: #27ae60;
+  color: #fff;
+  border-color: #1e8449;
+}
+
+.pagination-dot.completed.active {
+  background: #27ae60;
+  transform: scale(1.2);
+  box-shadow: 0 0 0 4px rgba(39, 174, 96, 0.3);
+}
+
+/* Drop Boxes Container */
+.drop-boxes-container {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.drop-box.single-box {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  animation: slideInBox 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes slideInBox {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.drop-box {
+  background: #fff;
+  border: 4px solid #3d2817;
+  border-radius: 20px;
+  padding: 15px;
+  min-width: 280px;
+  box-shadow: 5px 5px 0px rgba(61, 40, 23, 0.3);
+  transition: all 0.3s ease;
+}
+
+.drop-box.drag-target {
+  border-color: #d2691e;
+  background: #ffe8d0;
+  animation: bounce 0.5s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.drop-box.full {
+  border-color: #27ae60;
+  background: #d4edda;
+  animation: none;
+}
+
+.box-header {
+  font-family: "Permanent Marker", cursive;
+  font-size: 18px;
+  color: #3d2817;
+  text-align: center;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px dashed #d2691e;
+}
+
+.check-icon {
+  color: #27ae60;
+  font-weight: bold;
+  animation: checkBounce 0.5s ease;
+}
+
+@keyframes checkBounce {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.box-slots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.cookie-slot {
+  aspect-ratio: 1;
+  background: #fff9f0;
+  border: 2px dashed #d2691e;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 70px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.cookie-slot.touch-active {
+  background: #ffe8d0;
+  border-color: #d2691e;
+  border-style: solid;
+  animation: pulseSlot 0.8s ease-in-out infinite;
+}
+
+@keyframes pulseSlot {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.empty-slot {
+  font-size: 32px;
+  color: #d2691e;
+  opacity: 0.3;
+}
+
+.dropped-cookie {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}
+
+.dropped-cookie.animate-in {
+  animation: dropIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes dropIn {
+  0% {
+    transform: scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.dropped-cookie img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.remove-cookie-btn {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 22px;
+  height: 22px;
+  background: #e74c3c;
+  color: #fff;
+  border: 2px solid #3d2817;
+  border-radius: 50%;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.remove-cookie-btn:hover {
+  background: #c0392b;
+  transform: scale(1.1);
+}
+
+/* Cookie Selection Label */
+.cookie-selection-label {
+  text-align: center;
+  margin: 20px 0 15px;
+}
+
+.cookie-selection-label p {
+  font-family: "Comic Neue", cursive;
+  font-size: 16px;
+  font-weight: bold;
+  color: #3d2817;
+  margin: 0;
+}
+
+/* Cookie Grid in Modal */
+.customize-cookie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 12px;
+  margin-bottom: 25px;
+  max-height: 250px;
+  overflow-y: auto;
+  padding: 10px;
+  background: #fff;
+  border: 3px solid #3d2817;
+  border-radius: 15px;
+}
+
+.customize-cookie-item {
+  background: #fff9f0;
+  border: 3px solid #3d2817;
+  border-radius: 15px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.customize-cookie-item.clickable {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.customize-cookie-item.clickable:active {
+  transform: scale(0.9);
+}
+
+.customize-cookie-item:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 4px 4px 0px rgba(61, 40, 23, 0.3);
+  border-color: #d2691e;
+}
+
+.customize-cookie-item.just-added {
+  animation: addedPulse 0.5s ease;
+  background: #d4edda;
+  border-color: #27ae60;
+}
+
+@keyframes addedPulse {
+  0% {
+    transform: scale(1);
+    background: #fff9f0;
+  }
+  50% {
+    transform: scale(1.15);
+    background: #d4edda;
+    box-shadow: 0 0 20px rgba(39, 174, 96, 0.6);
+  }
+  100% {
+    transform: scale(1);
+    background: #d4edda;
+  }
+}
+
+.added-indicator {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 32px;
+  height: 32px;
+  background: #27ae60;
+  color: #fff;
+  border: 3px solid #3d2817;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: "Permanent Marker", cursive;
+  animation: indicatorPop 0.5s ease;
+}
+
+@keyframes indicatorPop {
+  0% {
+    transform: scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.3) rotate(0deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.customize-cookie-item img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.cookie-name {
+  font-family: "Comic Neue", cursive;
+  font-size: 11px;
+  font-weight: bold;
+  color: #3d2817;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* Modal Actions */
+.customize-modal-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.customize-add-btn,
+.customize-cancel-btn {
+  padding: 12px 30px;
+  border: 3px solid #3d2817;
+  border-radius: 15px;
+  font-family: "Permanent Marker", cursive;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 4px 4px 0px #3d2817;
+  transition: all 0.2s;
+}
+
+.customize-add-btn {
+  background: #d2691e;
+  color: #fff;
+}
+
+.customize-add-btn:hover:not(:disabled) {
+  background: #e67e22;
+  transform: translate(1px, 1px);
+  box-shadow: 3px 3px 0px #3d2817;
+}
+
+.customize-add-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.customize-cancel-btn {
+  background: #fff;
+  color: #3d2817;
+}
+
+.customize-cancel-btn:hover {
+  background: #fff9f0;
+  transform: translate(1px, 1px);
+  box-shadow: 3px 3px 0px #3d2817;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .customize-box-btn {
+    font-size: 16px;
+    padding: 12px 25px;
+  }
+
+  .customize-modal-overlay {
+    padding: 10px;
+    align-items: flex-start;
+  }
+
+  .customize-modal {
+    padding: 20px;
+    margin-top: 60px;
+    margin-bottom: 10px;
+    max-height: 88vh;
+    border-radius: 20px;
+    border-width: 4px;
+  }
+
+  .customize-modal h2 {
+    font-size: 26px;
+  }
+
+  .customize-subtitle {
+    font-size: 16px;
+  }
+
+  .size-btn {
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+
+  .size-price {
+    font-size: 12px;
+  }
+
+  /* Show mobile instructions, hide desktop */
+  .desktop-instruction {
+    display: none;
+  }
+
+  .mobile-instruction {
+    display: block;
+  }
+
+  .drag-instructions {
+    padding: 12px;
+  }
+
+  .drag-instructions p {
+    font-size: 14px;
+  }
+
+  .box-pagination {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .pagination-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 12px;
+    border-width: 3px;
+  }
+
+  .pagination-dots {
+    gap: 10px;
+  }
+
+  .pagination-dot {
+    width: 40px;
+    height: 40px;
+    font-size: 13px;
+    border-width: 3px;
+  }
+
+  .drop-boxes-container {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .drop-box {
+    min-width: 100%;
+    padding: 12px;
+  }
+
+  .drop-box.single-box {
+    max-width: 100%;
+  }
+
+  .box-header {
+    font-size: 16px;
+  }
+
+  .box-slots {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .cookie-slot {
+    min-height: 70px;
+    border-width: 3px;
+  }
+
+  .empty-slot {
+    font-size: 28px;
+  }
+
+  .remove-cookie-btn {
+    width: 26px;
+    height: 26px;
+    font-size: 18px;
+  }
+
+  .cookie-selection-label p {
+    font-size: 14px;
+  }
+
+  .customize-cookie-grid {
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 12px;
+    max-height: 200px;
+    padding: 15px;
+  }
+
+  .customize-cookie-item {
+    padding: 10px;
+    border-width: 3px;
+    border-radius: 12px;
+  }
+
+  .customize-cookie-item img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .cookie-name {
+    font-size: 11px;
+  }
+
+  .selected-badge {
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    top: -6px;
+    right: -6px;
+  }
+
+  .customize-modal-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .customize-add-btn,
+  .customize-cancel-btn {
+    width: 100%;
+    font-size: 16px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .customize-modal {
+    padding: 15px;
+    margin-top: 150px;
+    border-radius: 20px;
+  }
+
+  .customize-modal h2 {
+    font-size: 24px;
+  }
+
+  .customize-subtitle {
+    font-size: 14px;
+  }
+
+  .size-options {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .size-btn {
+    width: 100%;
+    padding: 16px 20px;
+    font-size: 16px;
+  }
+
+  .box-pagination {
+    padding: 12px;
+  }
+
+  .pagination-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .pagination-dots {
+    gap: 8px;
+  }
+
+  .pagination-dot {
+    width: 38px;
+    height: 38px;
+    font-size: 12px;
+  }
+
+  .customize-cookie-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    max-height: 220px;
+  }
+
+  .drag-instructions p {
+    font-size: 14px;
+  }
+
+  .pagination-dots {
+    gap: 6px;
+  }
+
+  .pagination-dot {
+    width: 32px;
+    height: 32px;
+    font-size: 11px;
+  }
+
+  .box-slots {
+    gap: 4px;
+  }
+
+  .cookie-slot {
+    min-height: 60px;
+  }
+
+  .customize-cookie-grid {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 8px;
+  }
+
+  .customize-cookie-item img {
+    width: 40px;
+    height: 40px;
+  }
+}

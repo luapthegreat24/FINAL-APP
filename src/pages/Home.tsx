@@ -44,8 +44,8 @@ const Home: React.FC = () => {
           <div className="hero-content-sketch">
             <div className="hero-badge">Est. 2024</div>
             <h1 className="hero-title-sketch">
-              <span className="word-1">Where Every</span>
-              <span className="word-2">Cookie Tells</span>
+              <span className="word-3">Where Every</span>
+              <span className="word-1">Cookie Tells</span>
               <span className="word-3">A Story!</span>
             </h1>
             <p className="hero-subtitle-sketch">

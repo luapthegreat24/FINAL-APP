@@ -1,9 +1,28 @@
-import React from "react";
-import { IonIcon } from "@ionic/react";
-import { logoFacebook, logoInstagram, logoTwitter } from "ionicons/icons";
+import React, { useState } from "react";
+import {
+  IonIcon,
+  IonModal,
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+} from "@ionic/react";
+import {
+  logoFacebook,
+  logoInstagram,
+  logoTwitter,
+  callOutline,
+  mailOutline,
+  locationOutline,
+  timeOutline,
+  closeOutline,
+} from "ionicons/icons";
 import "./Footer.css";
 
 const Footer: React.FC = () => {
+  const [showContactModal, setShowContactModal] = useState(false);
+
   return (
     <footer className="main-footer">
       <div className="footer-decorations">
@@ -38,7 +57,13 @@ const Footer: React.FC = () => {
           <a href="/our-story">
             <span className="link-arrow">→</span> About
           </a>
-          <a href="#contact">
+          <a
+            href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+              setShowContactModal(true);
+            }}
+          >
             <span className="link-arrow">→</span> Contact
           </a>
         </div>
@@ -69,6 +94,101 @@ const Footer: React.FC = () => {
         <div className="footer-divider"></div>
         <p>&copy; 2024 Cookie Haven. All rights reserved.</p>
       </div>
+
+      {/* Contact Modal */}
+      {showContactModal && (
+        <div
+          className="contact-modal-overlay"
+          onClick={() => setShowContactModal(false)}
+        >
+          <div className="contact-modal" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="modal-close-btn"
+              onClick={() => setShowContactModal(false)}
+            >
+              ×
+            </button>
+
+            <div className="contact-info-container">
+              <h2>Get in Touch</h2>
+              <p className="contact-subtitle">We'd love to hear from you!</p>
+
+              <div className="contact-details">
+                <div className="contact-item">
+                  <div className="contact-icon">
+                    <IonIcon icon={callOutline} />
+                  </div>
+                  <div className="contact-text">
+                    <h3>Phone</h3>
+                    <p>+63 123 456 7890</p>
+                    <p>+63 987 654 3210</p>
+                  </div>
+                </div>
+
+                <div className="contact-item">
+                  <div className="contact-icon">
+                    <IonIcon icon={mailOutline} />
+                  </div>
+                  <div className="contact-text">
+                    <h3>Email</h3>
+                    <p>hello@chiphappens.com</p>
+                    <p>support@chiphappens.com</p>
+                  </div>
+                </div>
+
+                <div className="contact-item">
+                  <div className="contact-icon">
+                    <IonIcon icon={locationOutline} />
+                  </div>
+                  <div className="contact-text">
+                    <h3>Address</h3>
+                    <p>123 Cookie Street</p>
+                    <p>Bakery District, Manila, Philippines</p>
+                  </div>
+                </div>
+
+                <div className="contact-item">
+                  <div className="contact-icon">
+                    <IonIcon icon={timeOutline} />
+                  </div>
+                  <div className="contact-text">
+                    <h3>Business Hours</h3>
+                    <p>Monday - Saturday: 8:00 AM - 8:00 PM</p>
+                    <p>Sunday: 10:00 AM - 6:00 PM</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="contact-modal-social">
+                <h3>Follow Us</h3>
+                <div className="social-links">
+                  <a
+                    href="#facebook"
+                    className="social-icon"
+                    aria-label="Facebook"
+                  >
+                    <IonIcon icon={logoFacebook} />
+                  </a>
+                  <a
+                    href="#instagram"
+                    className="social-icon"
+                    aria-label="Instagram"
+                  >
+                    <IonIcon icon={logoInstagram} />
+                  </a>
+                  <a
+                    href="#twitter"
+                    className="social-icon"
+                    aria-label="Twitter"
+                  >
+                    <IonIcon icon={logoTwitter} />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </footer>
   );
 };

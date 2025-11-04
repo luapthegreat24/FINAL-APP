@@ -35,6 +35,7 @@ interface Order {
   shippingInfo: any;
   paymentMethod: string;
   discountAmount?: number;
+  cancellationReason?: string;
 }
 
 const Orders: React.FC = () => {
@@ -42,6 +43,10 @@ const Orders: React.FC = () => {
   const { user } = useAuth();
   const [orders, setOrders] = useState<Order[]>([]);
   const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [cancelReason, setCancelReason] = useState("");
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+  const [selectedReasons, setSelectedReasons] = useState<string[]>([]);
 
   useEffect(() => {
     // Load orders from localStorage
@@ -102,6 +107,73 @@ const Orders: React.FC = () => {
   const goToShop = () => {
     history.push("/products");
   };
+
+  const closeCancelModal = () => {
+    setShowCancelModal(false);
+    setSelectedOrderId(null);
+    setCancelReason("");
+    setSelectedReasons([]);
+  };
+
+  const confirmCancel = () => {
+    if (!selectedOrderId) return;
+
+    try {
+      // Combine selected reasons and custom reason
+      const allReasons = [...selectedReasons];
+      if (cancelReason.trim()) {
+        allReasons.push(cancelReason.trim());
+      }
+      const finalReason = allReasons.join(", ");
+
+      const allOrders = JSON.parse(localStorage.getItem("orders") || "[]");
+      const updatedAll = allOrders.map((o: Order) => {
+        if (o.id === selectedOrderId) {
+          return {
+            ...o,
+            status: "cancelled",
+            cancellationReason: finalReason || "",
+          };
+        }
+        return o;
+      });
+      // Save back to localStorage
+      localStorage.setItem("orders", JSON.stringify(updatedAll));
+
+      // Update component state for current user view
+      const updatedOrders = orders.map((o) =>
+        o.id === selectedOrderId
+          ? {
+              ...o,
+              status: "cancelled",
+              cancellationReason: finalReason || "",
+            }
+          : o
+      );
+      setOrders(updatedOrders);
+      setFilteredOrders(updatedOrders);
+
+      closeCancelModal();
+    } catch (err) {
+      console.error("Error cancelling order:", err);
+    }
+  };
+
+  const handleReasonCheckbox = (reason: string) => {
+    setSelectedReasons((prev) =>
+      prev.includes(reason)
+        ? prev.filter((r) => r !== reason)
+        : [...prev, reason]
+    );
+  };
+
+  const cancellationOptions = [
+    "Changed my mind",
+    "Found a better price",
+    "Ordered by mistake",
+    "Delivery takes too long",
+    "Want to modify order",
+  ];
 
   return (
     <IonPage>
@@ -257,6 +329,20 @@ const Orders: React.FC = () => {
                         <IonIcon icon={eyeOutline} />
                         View Details
                       </button>
+                      {/* Cancel Order Button - shown only if not already cancelled */}
+                      {order.status !== "cancelled" && (
+                        <button
+                          className="cancel-order-btn"
+                          onClick={() => {
+                            setSelectedOrderId(order.id);
+                            setCancelReason("");
+                            setSelectedReasons([]);
+                            setShowCancelModal(true);
+                          }}
+                        >
+                          Cancel Order
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -264,6 +350,46 @@ const Orders: React.FC = () => {
             )}
           </div>
         </section>
+        {/* Cancel Order Modal */}
+        {showCancelModal && (
+          <div className="cancel-modal-overlay">
+            <div className="cancel-modal">
+              <h3>Cancel Order</h3>
+              <p>Please select reason(s) for cancelling this order:</p>
+
+              <div className="cancellation-options">
+                {cancellationOptions.map((option) => (
+                  <label key={option} className="cancel-checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={selectedReasons.includes(option)}
+                      onChange={() => handleReasonCheckbox(option)}
+                      className="cancel-checkbox"
+                    />
+                    <span>{option}</span>
+                  </label>
+                ))}
+              </div>
+
+              <p className="other-reason-label">Other reason (optional):</p>
+              <textarea
+                className="cancel-reason-input"
+                value={cancelReason}
+                onChange={(e) => setCancelReason(e.target.value)}
+                placeholder="Type your reason here..."
+                rows={3}
+              />
+              <div className="cancel-modal-actions">
+                <button className="cancel-confirm-btn" onClick={confirmCancel}>
+                  Confirm Cancel
+                </button>
+                <button className="cancel-close-btn" onClick={closeCancelModal}>
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </IonContent>
     </IonPage>
   );

@@ -24,6 +24,7 @@ import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
 import OurStory from "./pages/OurStory";
 import Developers from "./pages/Developers";
+import SplashScreen from "./components/SplashScreen";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -47,10 +48,22 @@ import "./theme/variables.css";
 setupIonicReact();
 
 const App: React.FC = () => {
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    // Show splash screen for 3 seconds
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <AuthProvider>
       <CartProvider>
         <IonApp>
+          <SplashScreen isVisible={showSplash} />
           <IonReactRouter>
             <IonRouterOutlet>
               <Route exact path="/" component={Home} />

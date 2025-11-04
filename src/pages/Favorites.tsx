@@ -5,7 +5,6 @@ import { useHistory } from "react-router-dom";
 import { getProductImage, products } from "../data/products";
 import { useCart } from "../context/CartContext";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import "./Favorites.css";
 
 const Favorites: React.FC = () => {
@@ -118,8 +117,6 @@ const Favorites: React.FC = () => {
             </div>
           )}
         </div>
-
-        <Footer />
       </IonContent>
     </IonPage>
   );

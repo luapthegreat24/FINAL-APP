@@ -271,19 +271,16 @@ ion-content {
 }
 
 .word-1 {
-  transform: rotate(-1deg);
-  text-shadow: 4px 4px 0 rgba(139, 69, 19, 0.3);
+  text-shadow: 2px 2px 0 rgba(139, 69, 19, 0.2);
 }
 
 .word-2 {
-  transform: rotate(1deg);
-  text-shadow: -4px 4px 0 rgba(139, 69, 19, 0.3);
+  text-shadow: 2px 2px 0 rgba(139, 69, 19, 0.2);
   margin-left: 30px;
 }
 
 .word-3 {
-  transform: rotate(-1.5deg);
-  text-shadow: 4px 4px 0 rgba(139, 69, 19, 0.3);
+  text-shadow: 2px 2px 0 rgba(139, 69, 19, 0.2);
   margin-left: 15px;
 }
 

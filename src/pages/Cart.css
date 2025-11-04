@@ -563,6 +563,34 @@ ion-content {
   color: #27ae60;
   text-align: center;
   flex: 1;
+  background: linear-gradient(
+    135deg,
+    rgba(39, 174, 96, 0.08) 0%,
+    rgba(39, 174, 96, 0.15) 100%
+  );
+  padding: 15px 20px;
+  border-radius: 20px;
+  border: 3px dashed #27ae60;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(39, 174, 96, 0.1);
+}
+
+.cart-item-total::before {
+  content: "Total";
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  font-family: "Comic Neue", cursive;
+  background: #fff;
+  padding: 3px 14px;
+  border-radius: 12px;
+  border: 2px solid #27ae60;
+  color: #27ae60;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.2);
 }
 
 .remove-item-btn {
@@ -1037,6 +1065,13 @@ ion-content {
     font-size: 26px;
     flex: 1;
     text-align: center;
+    padding: 12px 15px;
+  }
+
+  .cart-item-total::before {
+    font-size: 10px;
+    padding: 2px 10px;
+    top: -11px;
   }
 
   .remove-item-btn {
@@ -1065,5 +1100,662 @@ ion-content {
 
   .sketch-footer {
     padding: 40px 25px 20px;
+  }
+}
+
+/* Enhanced Cart Interactivity */
+.clickable-item {
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s ease;
+  overflow: hidden;
+}
+
+.clickable-item:hover {
+  transform: scale(1.05);
+}
+
+.view-details-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(61, 40, 23, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.clickable-item:hover .view-details-overlay {
+  opacity: 1;
+}
+
+.view-details-overlay span {
+  color: #fff;
+  font-family: "Comic Neue", cursive;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.clickable-details {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clickable-details:hover {
+  background: rgba(210, 105, 30, 0.05);
+  border-radius: 8px;
+  padding: 5px;
+  margin: -5px;
+}
+
+.info-badge {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 16px;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+}
+
+.clickable-details:hover .info-badge {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+/* Product Details Modal */
+.cart-details-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+.cart-details-modal {
+  background: #fff9f0;
+  border: 5px solid #3d2817;
+  border-radius: 25px;
+  padding: 40px;
+  max-width: 650px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 10px 10px 0px rgba(61, 40, 23, 0.4);
+  animation: slideUp 0.3s ease;
+  position: relative;
+  margin-top: 140px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  border: 3px solid #3d2817;
+  border-radius: 50%;
+  font-size: 24px;
+  font-weight: bold;
+  color: #3d2817;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 3px 3px 0px rgba(61, 40, 23, 0.3);
+}
+
+.modal-close-btn:hover {
+  background: #d2691e;
+  color: #fff;
+  transform: rotate(90deg);
+}
+
+.modal-product-image {
+  width: 100%;
+  height: 250px;
+  background: #fff;
+  border: 4px solid #3d2817;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+  padding: 20px;
+  box-shadow: 4px 4px 0px rgba(61, 40, 23, 0.2);
+}
+
+.modal-product-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.modal-product-info {
+  text-align: left;
+}
+
+.modal-product-name {
+  font-family: "Permanent Marker", cursive;
+  font-size: 32px;
+  color: #3d2817;
+  margin: 0 0 15px 0;
+  line-height: 1.2;
+}
+
+.modal-box-size-badge {
+  display: inline-block;
+  background: #d2691e;
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 20px;
+  border: 3px solid #3d2817;
+  font-family: "Comic Neue", cursive;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 20px;
+  box-shadow: 3px 3px 0px rgba(61, 40, 23, 0.3);
+}
+
+.box-cookie-count {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-left: 5px;
+}
+
+.modal-description {
+  background: #fff;
+  border: 3px solid #3d2817;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 3px 3px 0px rgba(61, 40, 23, 0.2);
+}
+
+.modal-description h3 {
+  font-family: "Permanent Marker", cursive;
+  font-size: 20px;
+  color: #3d2817;
+  margin: 0 0 10px 0;
+}
+
+.modal-description p {
+  font-family: "Comic Neue", cursive;
+  font-size: 16px;
+  color: #3d2817;
+  line-height: 1.6;
+  margin: 0 0 10px 0;
+}
+
+.modal-category {
+  font-size: 14px !important;
+  color: #8b6f47 !important;
+  margin: 10px 0 0 0 !important;
+}
+
+.modal-price-details {
+  background: #ffe8d0;
+  border: 3px solid #3d2817;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.modal-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Comic Neue", cursive;
+  font-size: 18px;
+  color: #3d2817;
+  margin-bottom: 12px;
+}
+
+.modal-price-row:last-child {
+  margin-bottom: 0;
+}
+
+.modal-price-row.modal-total {
+  border-top: 3px dashed #3d2817;
+  padding-top: 15px;
+  margin-top: 15px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.modal-price,
+.modal-quantity,
+.modal-total-price {
+  font-family: "Permanent Marker", cursive;
+  color: #d2691e;
+}
+
+.modal-total-price {
+  font-size: 28px;
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.modal-quantity-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  background: #fff;
+  border: 3px solid #3d2817;
+  border-radius: 50px;
+  padding: 10px 20px;
+  box-shadow: 3px 3px 0px rgba(61, 40, 23, 0.3);
+}
+
+.modal-qty-btn {
+  width: 45px;
+  height: 45px;
+  background: #d2691e;
+  color: #fff;
+  border: 3px solid #3d2817;
+  border-radius: 50%;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 2px 2px 0px rgba(61, 40, 23, 0.3);
+}
+
+.modal-qty-btn:hover {
+  background: #e67e22;
+  transform: scale(1.1);
+}
+
+.modal-qty-btn:active {
+  transform: scale(0.95);
+  box-shadow: 1px 1px 0px rgba(61, 40, 23, 0.3);
+}
+
+.modal-qty-display {
+  font-family: "Permanent Marker", cursive;
+  font-size: 28px;
+  color: #3d2817;
+  min-width: 50px;
+  text-align: center;
+}
+
+.modal-remove-btn {
+  width: 100%;
+  background: #fff;
+  border: 3px solid #d32f2f;
+  border-radius: 15px;
+  padding: 15px;
+  font-family: "Comic Neue", cursive;
+  font-size: 18px;
+  font-weight: bold;
+  color: #d32f2f;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+  box-shadow: 4px 4px 0px rgba(211, 47, 47, 0.3);
+}
+
+.modal-remove-btn:hover {
+  background: #d32f2f;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 5px 5px 0px rgba(211, 47, 47, 0.3);
+}
+
+.modal-remove-btn:active {
+  transform: translateY(0);
+  box-shadow: 2px 2px 0px rgba(211, 47, 47, 0.3);
+}
+
+/* Custom Box Display in Modal */
+.modal-custom-box-section {
+  background: #fff;
+  border: 3px solid #3d2817;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 3px 3px 0px rgba(61, 40, 23, 0.2);
+}
+
+.modal-custom-box-section h3 {
+  font-family: "Permanent Marker", cursive;
+  font-size: 20px;
+  color: #3d2817;
+  margin: 0 0 15px 0;
+  text-align: center;
+}
+
+.modal-box-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding: 12px;
+  background: #fff9f0;
+  border: 3px solid #3d2817;
+  border-radius: 15px;
+}
+
+.modal-pagination-btn {
+  padding: 8px 16px;
+  background: #d2691e;
+  color: #fff;
+  border: 3px solid #3d2817;
+  border-radius: 10px;
+  font-family: "Comic Neue", cursive;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 2px 2px 0px rgba(61, 40, 23, 0.3);
+}
+
+.modal-pagination-btn:hover:not(:disabled) {
+  background: #e67e22;
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0px rgba(61, 40, 23, 0.3);
+}
+
+.modal-pagination-btn:disabled {
+  background: #ccc;
+  color: #999;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.modal-pagination-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.modal-pagination-dot {
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  border: 3px solid #3d2817;
+  border-radius: 50%;
+  font-family: "Comic Neue", cursive;
+  font-size: 14px;
+  font-weight: bold;
+  color: #3d2817;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 0px rgba(61, 40, 23, 0.3);
+}
+
+.modal-pagination-dot:hover {
+  transform: scale(1.1);
+  border-color: #d2691e;
+}
+
+.modal-pagination-dot.active {
+  background: #d2691e;
+  color: #fff;
+  transform: scale(1.15);
+  box-shadow: 3px 3px 0px rgba(61, 40, 23, 0.4);
+}
+
+.modal-cookie-box {
+  background: #ffe8d0;
+  border: 3px dashed #d2691e;
+  border-radius: 15px;
+  padding: 15px;
+}
+
+.modal-box-header {
+  font-family: "Permanent Marker", cursive;
+  font-size: 18px;
+  color: #3d2817;
+  text-align: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: #fff;
+  border: 3px solid #3d2817;
+  border-radius: 10px;
+  box-shadow: 2px 2px 0px rgba(61, 40, 23, 0.2);
+}
+
+.modal-box-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.modal-cookie-slot {
+  background: #fff;
+  border: 3px solid #3d2817;
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-height: 100px;
+  box-shadow: 2px 2px 0px rgba(61, 40, 23, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.modal-cookie-slot:hover {
+  transform: translateY(-3px);
+  box-shadow: 3px 3px 0px rgba(61, 40, 23, 0.3);
+}
+
+.modal-cookie-slot img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.modal-cookie-name {
+  font-family: "Comic Neue", cursive;
+  font-size: 11px;
+  font-weight: bold;
+  color: #3d2817;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* Mobile Responsive for Modal */
+@media (max-width: 768px) {
+  .cart-details-modal {
+    padding: 30px 20px;
+    max-height: 90vh;
+  }
+
+  .modal-box-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .modal-cookie-slot {
+    min-height: 85px;
+    padding: 8px;
+  }
+
+  .modal-cookie-slot img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .modal-cookie-name {
+    font-size: 10px;
+  }
+
+  .modal-pagination-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .modal-pagination-dot {
+    width: 35px;
+    height: 35px;
+    font-size: 12px;
+  }
+
+  .modal-product-name {
+    font-size: 26px;
+  }
+
+  .modal-product-image {
+    height: 180px;
+  }
+
+  .modal-box-size-badge {
+    font-size: 14px;
+    padding: 6px 15px;
+  }
+
+  .modal-price-row {
+    font-size: 16px;
+  }
+
+  .modal-price-row.modal-total {
+    font-size: 20px;
+  }
+
+  .modal-total-price {
+    font-size: 24px;
+  }
+
+  .view-details-overlay span {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cart-details-modal {
+    padding: 25px 15px;
+    border-radius: 20px;
+    max-height: 80vh;
+  }
+
+  .modal-product-name {
+    font-size: 22px;
+  }
+
+  .modal-product-image {
+    height: 150px;
+    padding: 15px;
+  }
+
+  .modal-description,
+  .modal-price-details,
+  .modal-custom-box-section {
+    padding: 15px;
+  }
+
+  .modal-description h3,
+  .modal-custom-box-section h3 {
+    font-size: 18px;
+  }
+
+  .modal-description p {
+    font-size: 14px;
+  }
+
+  .modal-box-pagination {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .modal-pagination-btn {
+    width: 100%;
+    padding: 8px;
+  }
+
+  .modal-pagination-dots {
+    gap: 6px;
+  }
+
+  .modal-pagination-dot {
+    width: 32px;
+    height: 32px;
+    font-size: 11px;
+  }
+
+  .modal-box-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .modal-cookie-slot {
+    min-height: 80px;
+    padding: 6px;
+  }
+
+  .modal-cookie-slot img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .modal-cookie-name {
+    font-size: 9px;
+  }
+
+  .modal-box-header {
+    font-size: 16px;
+    padding: 8px;
+  }
+
+  .modal-qty-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  .modal-qty-display {
+    font-size: 24px;
+  }
+
+  .modal-remove-btn {
+    font-size: 16px;
+    padding: 12px;
   }
 }

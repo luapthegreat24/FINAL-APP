@@ -163,14 +163,29 @@ const Checkout: React.FC = () => {
       localStorage.setItem("orders", JSON.stringify(existingOrders));
       localStorage.setItem("lastOrder", JSON.stringify(order));
 
-      // Use Vercel deployment URL
+      // Get Stripe API URL from environment or use default
       const STRIPE_API_URL =
         import.meta.env.VITE_STRIPE_API_URL ||
         "https://vercel-stripe-clean-4h3vlhnxg-qpgdbraganza-4961s-projects.vercel.app";
 
-      // Call your Stripe server to create checkout session
-      // --- THIS IS THE FIXED LINE ---
+      // Get current origin dynamically (works for web, app, localhost, and production)
       const currentOrigin = window.location.origin;
+      const isCapacitor =
+        currentOrigin.includes("capacitor") || currentOrigin.includes("ionic");
+
+      // For Capacitor/Ionic app, use production URL; otherwise use current origin
+      const baseUrl = isCapacitor
+        ? import.meta.env.VITE_PRODUCTION_URL ||
+          "https://your-production-site.com"
+        : currentOrigin;
+
+      console.log("Dynamic redirect URLs:", {
+        baseUrl,
+        successUrl: `${baseUrl}/order-confirmation`,
+        cancelUrl: `${baseUrl}/cart`,
+      });
+
+      // Call Stripe server to create checkout session with dynamic URLs
       const response = await fetch(
         `${STRIPE_API_URL}/api/create-checkout-session`,
         {
@@ -191,8 +206,8 @@ const Checkout: React.FC = () => {
             shippingInfo,
             shipping,
             tax,
-            successUrl: `${currentOrigin}/order-confirmation`,
-            cancelUrl: `${currentOrigin}/cart`,
+            successUrl: `${baseUrl}/order-confirmation`,
+            cancelUrl: `${baseUrl}/cart`,
           }),
         }
       );

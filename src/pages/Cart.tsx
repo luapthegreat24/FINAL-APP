@@ -8,7 +8,6 @@ import {
   arrowBackOutline,
 } from "ionicons/icons";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import { useCart } from "../context/CartContext";
 import { getProductImage } from "../data/products";
 import "./Cart.css";
@@ -19,6 +18,9 @@ const Cart: React.FC = () => {
   const [promoCode, setPromoCode] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
   const [discount, setDiscount] = useState(0);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [currentBoxIndex, setCurrentBoxIndex] = useState(0);
 
   const goBack = () => {
     history.push("/");
@@ -76,6 +78,46 @@ const Cart: React.FC = () => {
     if (cart.length > 0) {
       history.push("/checkout");
     }
+  };
+
+  const handleItemClick = (item: any) => {
+    setSelectedItem(item);
+    setShowDetailsModal(true);
+    setCurrentBoxIndex(0);
+  };
+
+  const closeDetailsModal = () => {
+    setShowDetailsModal(false);
+    setCurrentBoxIndex(0);
+    setTimeout(() => setSelectedItem(null), 300);
+  };
+
+  // Parse custom box cookies from description
+  const parseCustomBoxCookies = (description: string) => {
+    if (!description) return [];
+    // Parse "2x Cookie Name, 3x Another Cookie" format
+    const items = description.split(", ");
+    const cookies: any[] = [];
+    items.forEach((item) => {
+      const match = item.match(/(\d+)x\s+(.+)/);
+      if (match) {
+        const count = parseInt(match[1]);
+        const name = match[2];
+        for (let i = 0; i < count; i++) {
+          cookies.push({ name, id: name.toLowerCase().replace(/\s+/g, "-") });
+        }
+      }
+    });
+    return cookies;
+  };
+
+  // Split cookies into boxes of 6
+  const getCustomBoxes = (cookies: any[]) => {
+    const boxes = [];
+    for (let i = 0; i < cookies.length; i += 6) {
+      boxes.push(cookies.slice(i, i + 6));
+    }
+    return boxes;
   };
 
   const subtotal = getCartTotal();
@@ -143,7 +185,11 @@ const Cart: React.FC = () => {
                       }-${index}`}
                       className="cart-item-card"
                     >
-                      <div className="cart-item-image">
+                      <div
+                        className="cart-item-image clickable-item"
+                        onClick={() => handleItemClick(item)}
+                        title="Click to view details"
+                      >
                         <img
                           src={`/images/cookies/${getProductImage(
                             item.product.id
@@ -155,10 +201,16 @@ const Cart: React.FC = () => {
                             objectFit: "contain",
                           }}
                         />
+                        <div className="view-details-overlay">
+                          <span>View Details</span>
+                        </div>
                       </div>
                       <div className="cart-item-right">
                         <div className="cart-item-top">
-                          <div className="cart-item-details">
+                          <div
+                            className="cart-item-details clickable-details"
+                            onClick={() => handleItemClick(item)}
+                          >
                             <h3 className="cart-item-name">
                               {item.product.name}
                             </h3>
@@ -309,7 +361,219 @@ const Cart: React.FC = () => {
           </div>
         </section>
 
-        <Footer />
+        {/* Product Details Modal */}
+        {showDetailsModal && selectedItem && (
+          <div
+            className="cart-details-modal-overlay"
+            onClick={closeDetailsModal}
+          >
+            <div
+              className="cart-details-modal"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button className="modal-close-btn" onClick={closeDetailsModal}>
+                ✕
+              </button>
+
+              <div className="modal-product-image">
+                <img
+                  src={`/images/cookies/${getProductImage(
+                    selectedItem.product.id
+                  )}`}
+                  alt={selectedItem.product.name}
+                />
+              </div>
+
+              <div className="modal-product-info">
+                <h2 className="modal-product-name">
+                  {selectedItem.product.name}
+                </h2>
+
+                <div className="modal-box-size-badge">
+                  {selectedItem.boxSize
+                    ? `${
+                        selectedItem.boxSize.charAt(0).toUpperCase() +
+                        selectedItem.boxSize.slice(1)
+                      } Box`
+                    : "Regular Box"}
+                  <span className="box-cookie-count">
+                    (
+                    {selectedItem.boxSize === "small"
+                      ? "6"
+                      : selectedItem.boxSize === "large"
+                      ? "24"
+                      : "12"}{" "}
+                    cookies)
+                  </span>
+                </div>
+
+                {/* Custom Box Contents */}
+                {selectedItem.product.category === "custom" &&
+                selectedItem.product.description ? (
+                  <>
+                    <div className="modal-custom-box-section">
+                      <h3>Box Contents</h3>
+                      {(() => {
+                        const allCookies = parseCustomBoxCookies(
+                          selectedItem.product.description
+                        );
+                        const boxes = getCustomBoxes(allCookies);
+                        const currentBox = boxes[currentBoxIndex] || [];
+
+                        return (
+                          <>
+                            {/* Pagination Controls */}
+                            {boxes.length > 1 && (
+                              <div className="modal-box-pagination">
+                                <button
+                                  className="modal-pagination-btn"
+                                  onClick={() =>
+                                    setCurrentBoxIndex(
+                                      Math.max(0, currentBoxIndex - 1)
+                                    )
+                                  }
+                                  disabled={currentBoxIndex === 0}
+                                >
+                                  ‹ Previous
+                                </button>
+                                <div className="modal-pagination-dots">
+                                  {boxes.map((_, index) => (
+                                    <button
+                                      key={index}
+                                      className={`modal-pagination-dot ${
+                                        index === currentBoxIndex
+                                          ? "active"
+                                          : ""
+                                      }`}
+                                      onClick={() => setCurrentBoxIndex(index)}
+                                    >
+                                      {index + 1}
+                                    </button>
+                                  ))}
+                                </div>
+                                <button
+                                  className="modal-pagination-btn"
+                                  onClick={() =>
+                                    setCurrentBoxIndex(
+                                      Math.min(
+                                        boxes.length - 1,
+                                        currentBoxIndex + 1
+                                      )
+                                    )
+                                  }
+                                  disabled={
+                                    currentBoxIndex === boxes.length - 1
+                                  }
+                                >
+                                  Next ›
+                                </button>
+                              </div>
+                            )}
+
+                            {/* Current Box Display */}
+                            <div className="modal-cookie-box">
+                              <div className="modal-box-header">
+                                Box {currentBoxIndex + 1} of {boxes.length}
+                              </div>
+                              <div className="modal-box-grid">
+                                {currentBox.map((cookie, idx) => (
+                                  <div
+                                    key={idx}
+                                    className="modal-cookie-slot filled"
+                                  >
+                                    <img
+                                      src={`/images/cookies/${getProductImage(
+                                        cookie.id
+                                      )}`}
+                                      alt={cookie.name}
+                                    />
+                                    <span className="modal-cookie-name">
+                                      {cookie.name}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </div>
+                  </>
+                ) : (
+                  <div className="modal-description">
+                    <h3>Description</h3>
+                    <p>{selectedItem.product.description}</p>
+
+                    {selectedItem.product.category && (
+                      <p className="modal-category">
+                        <strong>Category:</strong>{" "}
+                        {selectedItem.product.category}
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                <div className="modal-price-details">
+                  <div className="modal-price-row">
+                    <span>Unit Price:</span>
+                    <span className="modal-price">
+                      ₱
+                      {(
+                        selectedItem.price || selectedItem.product.price
+                      ).toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="modal-price-row">
+                    <span>Quantity:</span>
+                    <span className="modal-quantity">
+                      ×{selectedItem.quantity}
+                    </span>
+                  </div>
+                  <div className="modal-price-row modal-total">
+                    <span>Total:</span>
+                    <span className="modal-total-price">
+                      ₱
+                      {(
+                        (selectedItem.price || selectedItem.product.price) *
+                        selectedItem.quantity
+                      ).toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="modal-actions">
+                  <div className="modal-quantity-controls">
+                    <button
+                      className="modal-qty-btn"
+                      onClick={() =>
+                        decreaseQuantity(
+                          selectedItem.product.id,
+                          selectedItem.boxSize
+                        )
+                      }
+                    >
+                      <IonIcon icon={removeOutline} />
+                    </button>
+                    <span className="modal-qty-display">
+                      {selectedItem.quantity}
+                    </span>
+                    <button
+                      className="modal-qty-btn"
+                      onClick={() =>
+                        increaseQuantity(
+                          selectedItem.product.id,
+                          selectedItem.boxSize
+                        )
+                      }
+                    >
+                      <IonIcon icon={addOutline} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </IonContent>
     </IonPage>
   );

@@ -174,7 +174,6 @@ ion-content {
 .dev-avatar {
   font-size: 80px;
   margin-bottom: 20px;
-  animation: bounce 3s ease-in-out infinite;
 }
 
 .dev-avatar img {
